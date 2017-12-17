@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>The Traveler</title>
+</head>
+
+<body>
+    <!-- list pf predefined buttons-->
+    <button targetPlace="Golden+Gate+park+San+Francisco">California</button>
+    <button targetPlace="hawaii's+volcano+national+park+luau+waves+surfer">Hawaii</button>
+    <button targetPlace="cherry+blossoms+tea+gardens">Japan</button>
+    <button targetPlace="fountains+in+Rome">Italy</button> 
+    var locationArray = ['california', 'Hawaii', 'Japan','Italy'];
+
+    <!-- Add logic block to allow user to add additonal locations
+        Locations will be limited to 8. After 8 locations, new locations will 
+        replace existing buttons, starting with the lowest numbered button.
+        Give the users an option to add features they want to see.-->
+
+    <div id="gifs-appear-here">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("button").on("click", function () {
+            var tlocation = $(this).attr("targetPlace");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                tlocation + "&api_key=dc6zaTOxFJmzC&limit=1";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).done(function (response) {         
+                console.log(response);
+
+               
+
+                // =============== creates variaable to hold the query resukts ==================
+                var results = response.data;
+              
+
+                for (var i = 0; i < results.length; i++) {
+                  
+                    var gifDiv = $("<div class='item'>");
+
+                    var rating = results[i].rating;
+                   // If(rating !== "pg-13" && rating !== "r") {
+                        var p = $("<p>").text("Rating: " + rating);
+
+                        var locImage = $("<img>");
+                        locImage.attr("src", results[i].images.fixed_height.url);
+
+                        gifDiv.prepend(p);
+                        gifDiv.prepend(locImage);
+
+                        $("#gifs-appear-here").prepend(gifDiv);
+                    
+               
+                    // ==================================
+
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
