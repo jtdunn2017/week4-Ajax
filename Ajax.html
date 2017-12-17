@@ -3,57 +3,94 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Ajax Project/title>
+  <title> Ajax Project </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link type="text/css" href="assets/css/reset.css" />
+  <link type="text/css" href="assets/css/style.css" rel="stylesheet" /> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+  crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row heading">
-            <div class="col-sm-12"></div>
-         </div>
-        <div class="row buttons">
-            <div class="col-sm-12"></div>
-        </div>
-        <div class="row images">
-            <div class="col-sm-12"></div>
-        </div>
+
+    <button targetPlace="Golden+Gate+park+San+Francisco">California</button>
+    <button targetPlace="hawaii's+volcano+national+park+luau+waves+surfer">Hawaii</button>
+    <button targetPlace="cherry+blossoms+tea+gardens">Japan</button>
+    <button targetPlace="fountains+in+Rome">Italy</button>
+
+   
+     var barray=['california', 'Hawaii', 'Japan','Italy'];
+  
+
+   <div class="container">
+    <div class="row heading">
+
+      <div class="col-sm-12"></div>
+      <h1>The Traveler Photos</h1>
     </div>
-  <button id="H-button">Hawaiian Tour</button>
-  <div id="images">
+    <div class="row buttons">
+      <div class="col-sm-12"></div>
+      <!-->list of pre-defined buttons -->
+
+    </div>
+    <div class="row images">
+      <div id="rpics" class="col-sm-12"></div>
+    </div>
   </div>
+
+  </div>
+ 
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-    // Event listener for our island-button
-    $("#H-button").on("click", function () {
+    $("button").on("click", function () {
+      var tlocation = $(this).attr("targetPlace");
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        tlocation + "&api_key=dc6zaTOxFJmzC&limit=8";
 
-      //  giphy API URL for a random images of Hawaii
-      var ldata = "hawaii";
-      var queryURL = "https://api.giphy.com/v1/gifs/random?api+ldata+_key=O8nw6UXBAful4NieNTR9jRbeb5nrv3UR";
-
-      // Perfoming an AJAX GET request to our queryURL
       $.ajax({
         url: queryURL,
         method: "GET"
-      })
+      }).done(function (response) {
+        console.log(response);
 
-        // After the  AJAX request comes back
-        // Unclear on converting animated to statis with just the animated gif
-        //research freezeframe.js on github as a solution
-        .done(function (response) {
 
-          // Saving the image_original_url property
-          var imageUrl = response.data.image_original_url;
 
-          // Creating and storing an image tag
-          var islandImage = $("<img>");
+        // =============== creates variaable to hold the query resukts ==================
+        var results = response.data;
 
-          // Setting the catImage src attribute to imageUrl
-          islandImage.attr("src", imageUrl);
-          islandImage.attr("alt", "island image");
 
-          // Prepending the catImage to the images div
-          $("#images").append(islandImage);
-        });
+        for (var i = 0; i < results.length; i++) {
+
+          var gifDiv = $("<div class='rpics'>");
+
+          var rating = results[i].rating;
+          // If(rating !== "pg-13" && rating !== "r") {
+          var p = $("<p>").text("Rating: " + rating);
+
+          var locImage = $("<img>");
+          locImage.attr("src", results[i].images.fixed_height.url);
+
+          gifDiv.prepend(p);
+          gifDiv.prepend(locImage);
+
+          $("#gifs-appear-here").prepend(gifDiv);
+
+
+          // ==================================
+
+        }
+      });
     });
   </script>
 </body>
