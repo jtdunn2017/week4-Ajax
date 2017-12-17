@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ajax Project/title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row heading">
+            <div class="col-sm-12"></div>
+         </div>
+        <div class="row buttons">
+            <div class="col-sm-12"></div>
+        </div>
+        <div class="row images">
+            <div class="col-sm-12"></div>
+        </div>
+    </div>
+  <button id="H-button">Hawaiian Tour</button>
+  <div id="images">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // Event listener for our island-button
+    $("#H-button").on("click", function () {
+
+      //  giphy API URL for a random images of Hawaii
+      var ldata = "hawaii";
+      var queryURL = "https://api.giphy.com/v1/gifs/random?api+ldata+_key=O8nw6UXBAful4NieNTR9jRbeb5nrv3UR";
+
+      // Perfoming an AJAX GET request to our queryURL
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+        // After the  AJAX request comes back
+        // Unclear on converting animated to statis with just the animated gif
+        //research freezeframe.js on github as a solution
+        .done(function (response) {
+
+          // Saving the image_original_url property
+          var imageUrl = response.data.image_original_url;
+
+          // Creating and storing an image tag
+          var islandImage = $("<img>");
+
+          // Setting the catImage src attribute to imageUrl
+          islandImage.attr("src", imageUrl);
+          islandImage.attr("alt", "island image");
+
+          // Prepending the catImage to the images div
+          $("#images").append(islandImage);
+        });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!-- code snippett for creating a button -->
+var btn = document.createElement("BUTTON");        // Create a <button> element
+var t = document.createTextNode("CLICK ME");       // Create a text node
+btn.appendChild(t);                                // Append the text to <button>
+document.body.appendChild(btn);                    // Append <button> to <body> 
+
+<!-- Ajax call block -->
+// Storing our giphy API URL
+var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=zebra";
+
+// Perfoming an AJAX GET request to our queryURL
+$.ajax({
+  url: queryURL,
+  method: "GET"
+})
+
+
+<!-- Function to process query -->
+// After the data from the AJAX request comes back
+.done(function(response) {
+
+  // Saving the image_original_url property
+  var imageUrl = response.data.image_original_url;
+
+  // Creating and storing an image tag
+  var myImg  = $("<img>");
+
+  // Setting the myImage src attribute to imageUrl
+  myImg.attr("src", imageUrl);
+  myImg.attr("alt", "Some image");
+
+  // Prepending the catImage to the images div
+  $("#images").prepend(myImg);
